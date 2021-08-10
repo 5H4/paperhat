@@ -29,9 +29,26 @@ logs = "C://Users//SHALLY//Desktop//git//PaperHat//logs//paperhat_"
 #failed_root = "/home/arm/FTP/files/failed"
 
 '''
+    Server RPI, Mount external drive.
+    Tools: vsftpd
+    $ useradd arm
+    $ password arm
+    $ sudo chown nobody:nogroup /home/arm/FTP
+    $ sudo chmod a-w /home/arm/FTP
+    $ sudo chown arm:arm /home/arm/FTP/files
+    - $ sudo nano /etc/vsftpd.conf
+    - - user_sub_token=$USER
+    - - local_root=/home/$USER/FTP/files
+    - - userlist_enable=YES
+    - - userlist_file=/etc/vsftpd.userlist
+    - - - arm
+    - - userlist_deny=NO
+'''
+
+'''
     Scanned document via printer send to server via FTP in root folder -> files_root
     When paperhat done, move file from files_root to processed_root
-    if paperhat failed log error to -> logs paperhat.log
+    if paperhat failed log error to -> logs paperhat.log, file move to filed_root.
 '''
 
 # Create dir.
