@@ -3,22 +3,29 @@
 # Download: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
 # pip install tika
 from tika import parser
-import glob, os
 from shutil import copyfile
+from datetime import datetime
+from datetime import date
+import glob, os
 import shutil
+
+now_date = datetime.now()
+today = date.today()
+current_time = now_date.strftime("%H-%M-%S")
+current_date = today.strftime("%d-%m-%Y")
 
 # Windows path
 files_root = "C://Users//SHALLY//Desktop//git//PaperHat"
 mount_root = "C://Users//SHALLY//Desktop//git//PaperHat//mount"
 processed_root = "C://Users//SHALLY//Desktop//git//PaperHat//processed"
 failed_root = "C://Users//SHALLY//Desktop//git//PaperHat//failed"
-logs = "C://Users//SHALLY//Desktop//git//PaperHat//logs//paperhat.log"
+logs = "C://Users//SHALLY//Desktop//git//PaperHat//logs//paperhat_"
 
 # Linux path
 #files_root = "/home/arm/FTP/files"
 #mount_root = "/home/arm/FTP/files/mount"
 #processed_root = "/home/arm/FTP/files/processed"
-#logs = "/home/arm/FTP/files/logs/paperhat.log"
+#logs = "/home/arm/FTP/files/logs/paperhat_"
 #failed_root = "/home/arm/FTP/files/failed"
 
 '''
@@ -26,6 +33,13 @@ logs = "C://Users//SHALLY//Desktop//git//PaperHat//logs//paperhat.log"
     When paperhat done, move file from files_root to processed_root
     if paperhat failed log error to -> logs paperhat.log
 '''
+
+# Create dir.
+ROOT_DIR = os.path.abspath(os.curdir)
+create_dir = ['mount', 'processed', 'logs', 'failed']
+for d in  create_dir:
+        if not os.path.isdir(ROOT_DIR+'/'+d):
+            os.mkdir(ROOT_DIR+'/'+d)
 
 class bc:
     HEADER = '\033[95m'
@@ -84,7 +98,7 @@ for file in glob.glob("*.pdf"):
         failed +=1
         print(bc.WARNING+'Error found filename: {}{}'.format(bc.FAIL, file))
         shutil.move('{}/{}'.format(files_root, file), '{}'.format(failed_root, file))
-        with open(logs, 'a') as fd:
+        with open(logs+current_date+'#'+current_time+'.log', 'a') as fd:
             fd.write(f'\n{file}')
 
     if root_index % 10 == 0:
